@@ -1,0 +1,30 @@
+{
+  "name": "rsscloud-tester",
+  "version": "0.1.0",
+  "description": "App that emulates feeds and aggregators to test an rssCloud server implementation",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rsscloud/rsscloud-tester.git"
+  },
+  "author": "Andrew Shell <andrew@andrewshell.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rsscloud/rsscloud-tester/issues"
+  },
+  "homepage": "https://github.com/rsscloud/rsscloud-tester#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "express-ws": "^5.0.2",
+    "request-promise-native": "^1.0.9",
+    "ws": "^8.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}

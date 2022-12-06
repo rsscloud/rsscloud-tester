@@ -1,0 +1,48 @@
+<form method="POST" action="/pleaseNotify" id="pleasenotify">
+    <input type="hidden" name="session" value="{{ session }}" />
+    <label for="domain">cloud domain</label>
+    <input type="text" id="domain" name="domain" value="brokenriverbooks.com" /><br>
+    <label for="port">cloud port</label>
+    <input type="text" id="port" name="port" value="80" /><br>
+    <label for="path">cloud path</label>
+    <input type="text" id="path" name="path" value="/?rsscloud=notify" /><br>
+    <label for="feed">feed</label>
+    <input type="text" id="feed" name="feed" value="https://brokenriverbooks.com/feed/" /><br>
+    <button type="submit">Please Notify</button>
+</form>
+<pre id="eventlog">Event Log...
+</pre>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery('#pleasenotify').submit(function (event) {
+            const url = $(this).attr('action');
+            const values = $(this).serialize();
+
+            event.preventDefault();
+
+            jQuery.post(url, values);
+        });
+        if ("WebSocket" in window) {
+            try {
+                var socket = new WebSocket("ws://{{wshost}}/viewLog");
+
+                socket.onopen = function () {
+                    console.log("Socket.onopen: " + socket.readyState);
+                };
+
+                socket.onmessage = function(msg) {
+                    const logEvent = jQuery.parseJSON(msg.data);
+                    if (logEvent.session === "{{ session }}") {
+                        jQuery("#eventlog").append(`${logEvent.message}\n`);
+                    }
+                };
+
+                socket.onclose = function() {
+                    console.log("Socket.onclose: " + socket.readyState);
+                };
+            } catch (exception) {
+                console.log(exception);
+            }
+        }
+    });
+</script>
