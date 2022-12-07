@@ -22,13 +22,18 @@ app.get('/', (req, res) => {
   res.render('home', { wshost, session });
 }),
 
-app.post('/feedupdated-:session', (req, res) => {
-  logEvent(session, `POST ${req.params.session} ${req.params.url}`);
+app.get('/feedupdated-:session', (req, res) => {
+  logEvent(session, `GET /feedupdated-${req.params.session} ${req.params.url}`);
   if (req.params.challenge) {
     res.send(req.params.challenge);
   } else {
     res.send('');
   }
+});
+
+app.post('/feedupdated-:session', (req, res) => {
+  logEvent(session, `POST /feedupdated-${req.params.session} ${req.body.url}`);
+  res.send('');
 });
 
 app.post('/pleaseNotify', urlencodedParser, async (req, res) => {
