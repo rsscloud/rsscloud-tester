@@ -40,14 +40,14 @@ app.post('/feedupdated-:session', urlencodedParser, (req, res) => {
 
 app.post('/pleaseNotify', urlencodedParser, async (req, res) => {
   console.dir(req.body);
-  let apiurl, session = req.body.session, feed = req.body.feed;
+  let apiurl, session = req.body.session, feed = req.body.feed, omitdomain = req.body.omitdomain == '1';
   if ('80' === req.body.port) {
     apiurl = `https://${req.body.domain}${req.body.path}`;
   } else {
     apiurl = `https://${req.body.domain}:${req.body.port}${req.body.path}`;
   }
   // logEvent(session, `${apiurl} ${session} ${feed}`);
-  await pleaseNotify(apiurl, session, feed)
+  await pleaseNotify(apiurl, session, feed, omitdomain)
   res.json(req.body);
 })
 
@@ -80,7 +80,7 @@ function logEvent(session, message) {
   logEmitter.emit('logged-event', JSON.stringify({ session, message }));
 }
 
-async function pleaseNotify(apiurl, session, url1) {
+async function pleaseNotify(apiurl, session, url1, omitdomain) {
     logEvent(session, `POST ${apiurl} ${url1}`);
 
     const opts = {
@@ -97,6 +97,11 @@ async function pleaseNotify(apiurl, session, url1) {
       },
       resolveWithFullResponse: true
     };
+
+    if (omitdomain) {
+      delete opts.form.domain;
+      opts.form.port = config.port;
+    }
 
     console.dir(opts);
 
