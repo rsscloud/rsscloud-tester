@@ -24,15 +24,15 @@ app.get('/', (req, res) => {
 
 app.get('/feedupdated-:session', (req, res) => {
   const session = req.params.session;
-  logEvent(session, `GET /feedupdated-${session} ${req.params.url}`);
-  if (req.params.challenge) {
-    res.send(req.params.challenge);
+  logEvent(session, `GET /feedupdated-${session} ${req.query.url}`);
+  if (req.query.challenge) {
+    res.send(req.query.challenge);
   } else {
     res.send('');
   }
 });
 
-app.post('/feedupdated-:session', (req, res) => {
+app.post('/feedupdated-:session', urlencodedParser, (req, res) => {
   const session = req.params.session;
   logEvent(session, `POST /feedupdated-${session} ${req.body.url}`);
   res.send('');
@@ -76,6 +76,7 @@ function getRndInteger(minimum, maximum) {
 }
 
 function logEvent(session, message) {
+  console.log(`${session}: ${message}`)
   logEmitter.emit('logged-event', JSON.stringify({ session, message }));
 }
 
