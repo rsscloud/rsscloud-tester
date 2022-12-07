@@ -80,7 +80,8 @@ async function pleaseNotify(apiurl, session, url1) {
       uri: apiurl,
       timeout: config.requestTimeout,
       form: {
-        port: config.port,
+        domain: config.domain,
+        port: config.extport,
         path: `/feedupdated-${session}`,
         registerProcedure: '',
         protocol: 'http-post',
@@ -88,6 +89,8 @@ async function pleaseNotify(apiurl, session, url1) {
       },
       resolveWithFullResponse: true
     };
+
+    console.dir(opts);
 
     const res = await request(opts);
 
