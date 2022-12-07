@@ -23,7 +23,8 @@ app.get('/', (req, res) => {
 }),
 
 app.get('/feedupdated-:session', (req, res) => {
-  logEvent(session, `GET /feedupdated-${req.params.session} ${req.params.url}`);
+  const session = req.params.session;
+  logEvent(session, `GET /feedupdated-${session} ${req.params.url}`);
   if (req.params.challenge) {
     res.send(req.params.challenge);
   } else {
@@ -32,7 +33,8 @@ app.get('/feedupdated-:session', (req, res) => {
 });
 
 app.post('/feedupdated-:session', (req, res) => {
-  logEvent(session, `POST /feedupdated-${req.params.session} ${req.body.url}`);
+  const session = req.params.session;
+  logEvent(session, `POST /feedupdated-${session} ${req.body.url}`);
   res.send('');
 });
 
